@@ -1,0 +1,32 @@
+## Skicka 2024 for Retia
+## Read a MICS5524 gas sensor on IO17 and turns on the neopixel on a USB Nugget if value goes over 10000
+## Requires: USB Nugget, MICS5524 sensor
+
+import board
+import analogio
+import neopixel
+import time
+
+# Setup the gas sensor
+gas_sensor = analogio.AnalogIn(board.IO17)  # Adjust pin as necessary
+
+# Setup the NeoPixel LED
+num_pixels = 1  # Number of NeoPixels
+pixels = neopixel.NeoPixel(board.IO12, num_pixels)
+
+some_threshold = 10000  # Define your threshold value here
+
+while True:
+    # Read the gas sensor value
+    sensor_value = gas_sensor.value
+    print("Gas sensor reading:", sensor_value)
+
+    # Turn the NeoPixel red if gas is detected, green otherwise
+    if sensor_value > some_threshold:
+        pixels.fill((255, 0, 0))  # Red
+        print("Gas Detected!")
+    else:
+        pixels.fill((0, 255, 0))  # Green
+
+    time.sleep(0.1)  # Delay for a bit before reading again
+
